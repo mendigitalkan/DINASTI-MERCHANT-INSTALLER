@@ -10,4 +10,6 @@ router.patch('/update-password', middlewares_1.middleware.useAuthorization, asyn
 router.post('/request-otp-register', async (req, res) => await customer_1.customerController.requestOtpRegister(req, res));
 router.post('/request-otp-update-password', async (req, res) => await customer_1.customerController.requestOtpUpdatePassword(req, res));
 router.post('/verify-otp', async (req, res) => await customer_1.customerController.verifyOtp(req, res));
+router.post('/select-member', async (req, res) => await customer_1.customerController.selectMember(req, res));
+router.post('/point-histories', async (req, res) => await customer_1.customerController.pointHistory(req, res));
 exports.default = router;

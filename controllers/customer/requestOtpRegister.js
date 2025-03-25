@@ -41,7 +41,6 @@ const requestOtpRegister = async (req, res) => {
         const message = encodeURIComponent(`*${otpCode}* adalah kode verifikasi Anda.\n\n` +
             `Pengingat keamanan: Untuk memastikan keamanan akun Anda, mohon jangan bagikan informasi apa pun tentang akun Anda kepada siapa pun.`);
         const wablasResponse = await axios_1.default.get(`${configs_1.APP_CONFIGS.wablas.url}/send-message?phone=${telp}&message=${message}&token=${configs_1.APP_CONFIGS.wablas.apiKey}`);
-        console.log(wablasResponse);
         if (wablasResponse.status !== 200) {
             throw new Error('Failed to send OTP');
         }

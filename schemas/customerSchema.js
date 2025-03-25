@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.requestOtpCustomerSchema = exports.updatePasswordCustomerSchema = exports.cusotmerVerifyOtpSchema = exports.loginCustomerSchema = exports.cusotmerSchema = void 0;
+exports.pointHistorySchema = exports.selectMemberSchema = exports.requestOtpCustomerSchema = exports.updatePasswordCustomerSchema = exports.cusotmerVerifyOtpSchema = exports.loginCustomerSchema = exports.cusotmerSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 const jwtPyloadSchema_1 = require("./jwtPyloadSchema");
 exports.cusotmerSchema = joi_1.default.object({
@@ -47,4 +47,14 @@ exports.requestOtpCustomerSchema = joi_1.default.object({
         .min(10)
         .max(15)
         .required()
+});
+exports.selectMemberSchema = joi_1.default.object({
+    telp: joi_1.default.string()
+        .pattern(/^[0-9]+$/)
+        .min(10)
+        .max(15)
+        .required()
+});
+exports.pointHistorySchema = joi_1.default.object({
+    kodemember: joi_1.default.string()
 });
