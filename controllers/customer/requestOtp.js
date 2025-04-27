@@ -21,6 +21,7 @@ const requestOtp = async (req, res) => {
         logger_1.default.warn(message);
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response_1.ResponseData.error(message));
     }
+    console.log(value);
     const { telp } = value;
     try {
         const existingUser = await customer_1.CustomerModel.findOne({
@@ -30,7 +31,12 @@ const requestOtp = async (req, res) => {
                 telp: { [sequelize_1.Op.eq]: telp }
             }
         });
-        if (existingUser) {
+        if (value.type === 'forgotPassword' && existingUser === null) {
+            const message = `whatsapp number ${telp} is not registered.`;
+            logger_1.default.info(`Registration attempt failed: ${message}`);
+            return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response_1.ResponseData.error(message));
+        }
+        if (value.type === 'register' && existingUser !== null) {
             const message = `whatsapp number ${telp} is already registered.`;
             logger_1.default.info(`Registration attempt failed: ${message}`);
             return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response_1.ResponseData.error(message));
@@ -39,7 +45,7 @@ const requestOtp = async (req, res) => {
         const minutes = 300;
         await redis_1.default.setex(`otp:${otpCode}`, minutes, otpCode); // Store OTP in Redis for 5 minutes
         const message = encodeURIComponent(`*${otpCode}* adalah kode verifikasi Anda.\n\n` +
-            `Pengingat keamanan: Untuk memastikan keamanan akun Anda, mohon jangan bagikan informasi apa pun tentang akun Anda kepada siapa pun.`);
+            'Pengingat keamanan: Untuk memastikan keamanan akun Anda, mohon jangan bagikan informasi apa pun tentang akun Anda kepada siapa pun.');
         const wablasResponse = await axios_1.default.get(`${configs_1.APP_CONFIGS.wablas.url}/send-message?phone=${telp}&message=${message}&token=${configs_1.APP_CONFIGS.wablas.apiKey}`);
         if (wablasResponse.status !== 200) {
             throw new Error('Failed to send OTP');

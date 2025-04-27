@@ -14,6 +14,7 @@ const customerSchema_1 = require("../../schemas/customerSchema");
 const customer_1 = require("../../models/customer");
 const axios_1 = __importDefault(require("axios"));
 const configs_1 = require("../../configs");
+const generateId_1 = require("../../utilities/generateId");
 const registerCUstomer = async (req, res) => {
     const { error, value } = (0, validateRequest_1.validateRequest)(customerSchema_1.cusotmerSchema, req.body);
     if (error != null) {
@@ -36,7 +37,9 @@ const registerCUstomer = async (req, res) => {
             logger_1.default.info(`Registration attempt failed: ${message}`);
             return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response_1.ResponseData.error(message));
         }
-        const apiResponse = await axios_1.default.post(configs_1.APP_CONFIGS.externalAppUrl + '/inanggota', value, {
+        const payload = { ...value, kode: (0, generateId_1.generateUniqueId)(), cardid: value.telp, toko: '_' };
+        console.log(payload);
+        const apiResponse = await axios_1.default.post(configs_1.APP_CONFIGS.externalAppUrl + '/inanggota', payload, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -46,9 +49,10 @@ const registerCUstomer = async (req, res) => {
         }
         const hashedPassword = (0, scure_password_1.hashPassword)(password);
         const newCustomer = {
-            ...value,
+            ...payload,
             password: hashedPassword
         };
+        console.log(newCustomer);
         await customer_1.CustomerModel.create(newCustomer);
         logger_1.default.info(`Whatsapp number ${telp} registered successfully`);
         return res

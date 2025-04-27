@@ -44,7 +44,7 @@ const loginCustomer = async (req, res) => {
             userRole: 'user',
             telp: user.telp
         });
-        logger_1.default.info(`User logged in successfully`);
+        logger_1.default.info('User logged in successfully');
         return res
             .status(http_status_codes_1.StatusCodes.OK)
             .json(response_1.ResponseData.success({ token, ...user.dataValues }));

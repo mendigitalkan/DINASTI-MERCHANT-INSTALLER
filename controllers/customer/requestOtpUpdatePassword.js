@@ -15,7 +15,7 @@ const configs_1 = require("../../configs");
 const redis_1 = __importDefault(require("../../redis"));
 const customerSchema_1 = require("../../schemas/customerSchema");
 const requestOtpUpdatePassword = async (req, res) => {
-    const { error, value } = (0, validateRequest_1.validateRequest)(customerSchema_1.requestOtpCustomerSchema, req.body);
+    const { error, value } = (0, validateRequest_1.validateRequest)(customerSchema_1.requestOtpUpdatePasswordCustomerSchema, req.body);
     if (error != null) {
         const message = `Invalid request parameter! ${error.details.map((x) => x.message).join(', ')}`;
         logger_1.default.warn(message);
@@ -39,7 +39,7 @@ const requestOtpUpdatePassword = async (req, res) => {
         const minutes = 300;
         await redis_1.default.setex(`otp:${otpCode}`, minutes, otpCode); // Store OTP in Redis for 5 minutes
         const message = encodeURIComponent(`*${otpCode}* adalah kode verifikasi Anda.\n\n` +
-            `Pengingat keamanan: Untuk memastikan keamanan akun Anda, mohon jangan bagikan informasi apa pun tentang akun Anda kepada siapa pun.`);
+            'Pengingat keamanan: Untuk memastikan keamanan akun Anda, mohon jangan bagikan informasi apa pun tentang akun Anda kepada siapa pun.');
         const wablasResponse = await axios_1.default.get(`${configs_1.APP_CONFIGS.wablas.url}/send-message?phone=${telp}&message=${message}&token=${configs_1.APP_CONFIGS.wablas.apiKey}`);
         if (wablasResponse.status !== 200) {
             throw new Error('Failed to send OTP');
