@@ -6,7 +6,7 @@ const response_1 = require("../utilities/response");
 const index = async (req, res) => {
     try {
         const data = {
-            about_me: 'Welcome to Cara Ngoding API V1'
+            about_me: 'Welcome to DINASTI API V1'
         };
         const response = response_1.ResponseData.success(data);
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);

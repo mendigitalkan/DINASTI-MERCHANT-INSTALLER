@@ -16,8 +16,12 @@ exports.PromotionModel = _1.sequelize.define('Promotion', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
+    promotionImage: {
+        type: sequelize_1.DataTypes.TEXT,
+        allowNull: false
+    },
     promotionDescription: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.TEXT,
         allowNull: false
     }
 }, {

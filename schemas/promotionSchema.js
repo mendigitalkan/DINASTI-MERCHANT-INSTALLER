@@ -8,6 +8,7 @@ const joi_1 = __importDefault(require("joi"));
 exports.createPromoSchema = joi_1.default.object({
     promotionName: joi_1.default.string().required(),
     promotionDescription: joi_1.default.string().required(),
+    promotionImage: joi_1.default.string().required(),
     createdAt: joi_1.default.date().optional(),
     updatedAt: joi_1.default.date().optional()
 });
